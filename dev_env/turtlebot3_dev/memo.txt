@@ -1,0 +1,72 @@
+- AMD64 터틀봇 3 개발 환경 구축 관련 메모 (Jetson Nano 개발 환경에서도 동작이 확인되면 ARM64에서도 유효한 것으로 확인한다.)
+
+(WORK IN PROGRESS: 작업중인 문서. 내용 정리가 말끔하게 된 이후에는 .md 혹은 wiki로 정리하여 제대로 반영할 예정)
+(다음과 같은 과정을 거쳐서 개발환경을 구축함. 상당히 혼란스러운 과정을 거쳤으므로 이와 관련된 내용을 잘 살펴보도록.)
+하단의 내용은 모두 shell script로 자동화 시킬 예정
+
+1. 하단의 커맨드를 실행한다. 그리고 sudo apt update를 수행한다. (중요!!!)
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+sudo apt update
+2. sudo apt install -y python-rosinstall python-rosinstall-generator python-wstool build-essential python-rosdep ninja-build 을 수행한다.
+3. sudo apt install -y ros-melodic-desktop-full 설치 (ROS 공식 사이트의 설치 방식을 따르도록)
+4. sudo apt install -y ros-melodic-turtlebot3-*를 통해 turtlebot3와 관련된 모든 패키지 및 의존 패키지를 설치한다.
+5. /home/(youraccount)/ 에 catkin 워크 스페이스 폴더를 구축 (예제: catkin_ws)
+6. catkin_ws에서 catkin 워크 스페이스를 init 하고 하단의 명령어를 수행하여 cartographer 소스코드를 불러들인다.
+wstool merge -t src https://raw.githubusercontent.com/googlecartographer/cartographer_ros/master/cartographer_ros.rosinstall
+wstool update -t src
+7. 다음의 명령어를 수행하여 불러들인 cartographer 레포지토리가 빌드가 가능한 상태로 개발한다. proto3 관련 폴더가 해당 workspace에 추가된다.
+src/cartographer/scripts/install_proto3.sh
+
+8. 다음의 명령어를 통해 ros를 초기 설정한다.
+sudo rosdep init
+rosdep update
+rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+echo "export TURTLEBOT3_MODEL=burger" >> ~/.bashrc
+echo "export ROS_HOSTNAME=localhost" >> ~/.bashrc
+echo "export ROS_MASTER_URI=http://$ROS_HOSTNAME:11311" >> ~/.bashrc
+source ~/.bashrc
+
+9. 다음의 명령어를 수행하여 turtlebot3와 그와 의존성을 띄는 패키지를 빌드할 수 있는 소스코드를 구축한다. Cartographer는 위의 과정을 통해 이미 소스코드가 들어있음을 알아두도록 한다.
+git clone https://github.com/ros-perception/slam_gmapping
+git clone https://github.com/ros-perception/openslam_gmapping
+git clone https://github.com/ros-planning/navigation.git
+git clone https://github.com/ros/geometry2.git
+git clone https://github.com/ROBOTIS-GIT/turtlebot3
+git clone https://github.com/ROBOTIS-GIT/turtlebot3_msgs
+git clone https://github.com/ROBOTIS-GIT/turtlebot3_simulations
+
+9-1. 만일 컴파일 과정에서 문제가 발생한 경우 하단의 소스코드 들을 추가하도록 한다.
+git clone https://github.com/ros-planning/navigation_msgs.git
+
+10. 다음의 명령어를 수행하여 turtlebot3를 포함한 모든 소스코드가 isolated로 빌드되고 설치될 수 있도록 한다. 앞으로 모든 소스코드를 빌드할 때 밑의 소스코드로 빌드해라.
+catkin_make_isolated --install --use-ninja
+
+11. 다음의 명령어를 수행하여 패키지가 제대로 설치되었는지 확인한다. 컴파일된 폴더는 install_isolated에 위치해있을 것이다.
+rospack list
+
+12. 다음의 명령어를 수행하여 install_isolated 경로를 제대로 인식하도록 한다.
+echo "source /home/jetson/catkin_ws/install_isolated/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+
+여기까지 모두 수행했다면 최소한 시뮬레이션 환경에서 gazebo 및 cartographer (단, slam을 구동하기 전 gazebo 전용으로 세팅된 파일을 사용하도록 내부 파일 수정이 필요하다), gmapping, rvidz, amcl, navigation 기능이 모두 제대로 작동될 것이다.
+
+- 이렇게까지 복잡한 이유
+ubuntu 패키지 레포지토리의 업데이트 속도와 github에서 지속적으로 반영되는 소스코드들의 업데이트 속도가 매우 심각해 패키지 레포지토리와 최신 소스코드 간의 호환성 문제가 발생한 것이 ROS 오작동의 제일 큰 원인이다.
+원래 터틀봇 가상 환경에서는 amcl을 구동할 시에 바로 위치를 찾아야 하는 것이 정상이나, 호환성 문제 등으로 인한 문제점이 생길 경우 위치 추적이 원활하게 이루어질 수 없음.
+ros 공식 ubuntu용 ros 패키지 레포지토리와 github의 소스코드 레포지토리의 반영 속도 차이 탓에 github에서는 이미 해결된 문제나 바뀐 내용들이 패키지 레포지토리 상에서는 아직 반영이 되지 않은 상태여서 업데이트 되어 서로 간의 충돌 문제가 빈번히 발생함.
+ROS는 ROS 패키지의 대다수의 구성 요소들이 노드 통신이 제대로 이루어질 수 있도록 내용이 모두 제대로 맞아야 원활한 소프트웨어 구동이 가능한 구조임.
+이를 위해 필요한 패키지에 대해서는 직접 컴파일을 하여 패키지의 최신 수정 내용이 반영된 상태로 만들어 둬야 한다.
+
+- build에 ninja를 사용하게 된 이유
+google cartographer는 ninja를 이용한 빌드를 필수로 하고 있기 때문. ninja용 workspace와 분리하는 것이 불가능하지는 않으나, 각 패키지 간 의존성 문제가 발생할 수도 있기 때문에 한번 ninja로 빌드하면 (가능하면) ninja로 쭉 빌드해야 한다.
+
+- ninja를 이용한 ros package 컴파일을 ARM64 환경에서 실행하면 안 되는 이유 (ninja 사용이 불가피한 경우에 대한 대비책도 들어 있음)
+ninja 빌드는 cpu의 자원을 매우 크게 활용하는 구조로 이루어져 있다. 이는 프로세서에 어마무시한 과열을 일으킬 수 있고, 상황에 따라서는 임베디드 보드를 파손시킬 수 있을 만한 환경에 노출 될 수도 있다.
+(실제로 ninja build를 사용하고 난 후 Jetson Nano Board가 파손되었음. (그것도 쿨링팬을 착용한 상태였다!))
+그렇기 때문에 해당 패키지들을 ninja로 빌드하여 arm64/aarch64 환경에서 사용하기 위해서는 크로스 컴파일 환경을 구축해야 한다.
+크로스 컴파일 환경은 qemu를 사용해야 한다. (이에 대해서는 추후 다른 페이지에서 기술할 예정)
+ARM64 환경에서의 ninja 빌드가 불가피한 경우 catkin_make_isolated --install --use-ninja 뒤에 -j1을 붙여 패키지 빌드를 위한 프로세스 가동 갯수를 최소화 시켜야 한다. 
+다만, j1으로 줄이게 되면 컴파일 속도는 매우 크게 줄어들으므로 그에 따른 패널티는 감수해야 한다.
+사실 임베디드 환경에서는 리눅스 커널 조차 프로세스 최대 동원 갯수로 빌드하는 환경을 권장하지 않는다. 이는 JetsonHack의 최근 shellscript에서 (최대동원 프로세서 갯수-1)로 1개 줄인 상태로 커널을 빌드하는 상황이라면 이해 가능할 것이다.
+향후 작성한 소프트웨어가 무거워진 상황에서 불가피하게 arm64에서 빌드할 경우 동원되는 프로세서의 갯수를 줄이는 것을 권장하는 바이다.
