@@ -70,3 +70,9 @@ ARM64 환경에서의 ninja 빌드가 불가피한 경우 catkin_make_isolated -
 다만, j1으로 줄이게 되면 컴파일 속도는 매우 크게 줄어들으므로 그에 따른 패널티는 감수해야 한다.
 사실 임베디드 환경에서는 리눅스 커널 조차 프로세스 최대 동원 갯수로 빌드하는 환경을 권장하지 않는다. 이는 JetsonHack의 최근 shellscript에서 (최대동원 프로세서 갯수-1)로 1개 줄인 상태로 커널을 빌드하는 상황이라면 이해 가능할 것이다.
 향후 작성한 소프트웨어가 무거워진 상황에서 불가피하게 arm64에서 빌드할 경우 동원되는 프로세서의 갯수를 줄이는 것을 권장하는 바이다.
+
+문서 작성 reference:
+http://wiki.ros.org/melodic/Installation/Ubuntu
+http://emanual.robotis.com/docs/en/platform/turtlebot3/pc_setup/#pc-setup
+https://google-cartographer-ros.readthedocs.io/en/latest/compilation.html
+https://www.robotech-note.com/entry/2018/12/16/ROS_melodic%28Ubuntu18_04%29%E3%81%A7map_server%2Cgmapping%2Cnavigation%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E5%B0%8E%E5%85%A5%E3%81%99%E3%82%8B
