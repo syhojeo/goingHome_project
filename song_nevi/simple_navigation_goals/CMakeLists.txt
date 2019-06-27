@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(simple_navigation_goals_tutorial)
 
-find_package(catkin REQUIRED COMPONENTS actionlib move_base_msgs roscpp tf)
+find_package(catkin REQUIRED COMPONENTS geometry_msgs amcl actionlib move_base_msgs std_msgs roscpp tf)
 
 catkin_package()
 
