@@ -52,6 +52,6 @@
 2. slam tuning 하며 .lua 파일 공부
 
 
-(장종화)
+(장종하)
 
 1. ros 구조 공부 및 opencv 얼굴인식 study
