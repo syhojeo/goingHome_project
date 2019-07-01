@@ -1,0 +1,7 @@
+#request
+int8 msg_sector
+int8 msg_num
+String name
+---
+#result
+bool result
