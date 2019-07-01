@@ -50,6 +50,6 @@ turtlebot3_core를 올려야된다
 
 2. 로봇 시뮬레이션 장소 만들기
 
-(장종화)
+(장종하)
 
 1. ros 구조 공부 및 opencv 얼굴인식 study
