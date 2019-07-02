@@ -1,6 +1,6 @@
 영상처리(카메라)  부분 진행 상황
 
-1.ROS에서 open CV를 이용한 영상처리를 위해서는 CV bridge 를 사용해야한다
+#### 1.ROS에서 open CV를 이용한 영상처리를 위해서는 CV bridge 를 사용해야한다
 
 ROS image/message -> CV bridge -> opencv (영상처리)
 
@@ -8,7 +8,7 @@ ROS image/message -> CV bridge -> opencv (영상처리)
 
 
 
-2.카메라 영상을 ros에서 사용가능한 message (image/message) 로 만들 필요가 있다.
+#### 2.카메라 영상을 ros에서 사용가능한 message (image/message) 로 만들 필요가 있다.
 
 gscam 패키지를 사용
 
@@ -18,7 +18,7 @@ gscam 은 여러 멀티 미디어를 모두 제어가능한 gstreamer를 사용�
 
 
 
-3.gscam 을 실행하면 될줄 알았으나 실패 -> ERROR message :  could not get gstreamer sample
+#### 3.gscam 을 실행하면 될줄 알았으나 실패 -> ERROR message :  could not get gstreamer sample
 
 => 다른 패키지를 이용해보려 하였으나 인터넷상의 대부분의 패키지에 gscam 이 들어가는 것으로 보아 근본적인 문제를 해결해야할 필요성을 느낌
 
@@ -48,7 +48,7 @@ gscam cpp 파일
 
 
 
-4.문제 원인
+#### 4.문제 원인
 
 1) gscam 은 오래된 패키지인 만큼 gstreamer 의 버전이 맞지 않다라는 생각
 
