@@ -2,16 +2,18 @@ cmake_minimum_required(VERSION 2.8.3)
 project(goinghome_host_eventhandler)
 find_package(catkin REQUIRED COMPONENTS message_generation roscpp std_msgs)
 
-add_service_files(FILES request.srv)
-add_message_files(FILES default.msg)
+add_service_files(FILES nav_request.srv)
+add_service_files(FILES survail_request.srv)
 generate_messages(DEPENDENCIES std_msgs)
+# add_message_files(FILES default.msg)
+
 
 catkin_package(LIBRARIES goinghome_host_eventhandler CATKIN_DEPENDS message_generation roscpp std_msgs)
 
 include_directories(${catkin_INCLUDE_DIRS})
 
 # main_control에 빌드 옵션
-add_executable(main_control src/eventhandler.h src/main_control.cpp src/destination.cpp src/util.cpp)
+add_executable(main_control src/eventhandler.h src/main_control.cpp src/destination.cpp src/camera_control.cpp src/util.cpp)
 add_dependencies(main_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(main_control ${catkin_LIBRARIES})
 

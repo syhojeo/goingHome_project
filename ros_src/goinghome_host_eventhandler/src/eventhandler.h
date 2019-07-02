@@ -1,8 +1,9 @@
-#include "ros/ros.h"
-#include "goinghome_host_eventhandler/request.h"
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include "ros/ros.h"
+#include "goinghome_host_eventhandler/nav_request.h"
+#include "goinghome_host_eventhandler/survail_request.h"
 
 typedef struct location
 {
@@ -23,7 +24,7 @@ typedef struct location
 // HARD CODING FIRST, IMPLEMENT IT TO FILE SYSTEM LATER!
 
 void destination_menu();
-void gobase();
+void gobase(int mode);
 void set_destination(std::string &dest, std::string &name, std::string &mode);
 void initialize_control();
 void goSurveilancemode();

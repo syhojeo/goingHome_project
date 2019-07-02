@@ -2,9 +2,9 @@
 
 bool nav_progress = false;
 
-void gobase()
+void gobase(int mode = 0)
 {
-    if (nav_progress)
+    if (nav_progress && mode == 0)
     {
         printf("Robot service in progress. control order rejected\n");
         ROS_ERROR("Error: navigating in progress\n");
@@ -14,9 +14,9 @@ void gobase()
     nav_progress = true;
 
     ros::NodeHandle nh;
-    ros::ServiceClient navigation_service_client = nh.serviceClient<goinghome_host_eventhandler::request>("navigation_service_srv");
+    ros::ServiceClient navigation_service_client = nh.serviceClient<goinghome_host_eventhandler::nav_request>("navigation_request");
     
-    goinghome_host_eventhandler::request rq;
+    goinghome_host_eventhandler::nav_request rq;
 
     rq.request.px = 0;
     rq.request.py = 0;
@@ -28,9 +28,20 @@ void gobase()
 
     if (navigation_service_client.call(rq))
     {
-        ROS_INFO("request: (%f, %f, %f), (%f, %f, %f, %f)\n", (float)rq.request.px, (float)rq.request.py, (float)rq.request.pz, 
+        printf("request: (%f, %f, %f), (%f, %f, %f, %f)\n", (float)rq.request.px, (float)rq.request.py, (float)rq.request.pz, 
         (float)rq.request.ox, (float)rq.request.oy, (float)rq.request.oz, (float)rq.request.ow);
-        ROS_INFO("result: %d\n", rq.response.result);
+
+        if(!rq.response.result)
+        {
+            printf("send succees!\n");
+        }
+
+        else
+        {
+            printf("error while processing navigation_service_client\n");
+        }
+
+        printf("result: %d\n", rq.response.result);
     }
 
     else
@@ -46,7 +57,7 @@ void set_destination(std::string &dest, std::string &name)
     // 여기에 서비스/메시지 관련 내용 추가
 
     std::cout << "WORK IN PROGRESS" << '\n';
-    // nav_progress = true;
+    nav_progress = true;
 
     return;
 }

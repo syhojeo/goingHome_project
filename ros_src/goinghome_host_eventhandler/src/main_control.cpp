@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 
                 case '2':
                     printf("call robot: return to base\n");
-                    gobase();
+                    gobase(0);
                     break;
 
                 case '3':
