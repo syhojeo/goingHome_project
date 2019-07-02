@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 2.8.3)
 project(goinghome_host_eventhandler)
 find_package(catkin REQUIRED COMPONENTS message_generation roscpp std_msgs)
 
+add_service_files(FILES request.srv)
 add_message_files(FILES default.msg)
 generate_messages(DEPENDENCIES std_msgs)
 
-catkin_package(LIBRARIES goinghome_host_eventhandler CATKIN_DEPENDS message_generation roscpp std_msgs )
+catkin_package(LIBRARIES goinghome_host_eventhandler CATKIN_DEPENDS message_generation roscpp std_msgs)
 
 include_directories(${catkin_INCLUDE_DIRS})
 
@@ -14,6 +15,9 @@ add_executable(main_control src/eventhandler.h src/main_control.cpp src/destinat
 add_dependencies(main_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(main_control ${catkin_LIBRARIES})
 
+add_executable(request_server src/eventhandler.h src/request_server.cpp)
+add_dependencies(request_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(request_server ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -31,6 +35,12 @@ target_link_libraries(main_control ${catkin_LIBRARIES})
 
 ## Mark executables and/or libraries for installation
 install(TARGETS main_control
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(TARGETS request_server
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
