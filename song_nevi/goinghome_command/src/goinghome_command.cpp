@@ -1,14 +1,14 @@
 #include <ros/ros.h>
 #include <ros/service_client.h>
 #include <ros/service.h>
-#include <std_msgs/UInt8.h>
+#include <ros/service_server.h>
 #include<ros/node_handle.h>
-#include <geometry_msgs/PoseWithCovarianceStamped.h>
 
 //srv 불러 오기
 #include <goinghome_command/command.h>
-#include <goinghome_command/gohome_nevi.h>
 
+
+#define DEBUG
 
 //command node 
 
@@ -18,119 +18,77 @@ topic root
 server    <-->    client
 command node  <--> command service node
 nevi_node     <--> command node
-
 */
 
-ros::NodeHandle nh;
-goinghome_command::command command_msg;
-goinghome_command::command nevi_msg;
-//ros::ServiceClient client_srv=nh.serviceClient("command_srv");
 
+int pointtoSector(float px ,float py ,float pz,float ox,float oy,float oz,float ow){
+//map server에서 맵정보를 받아와 9개의 구역으로 변환
 
-bool command_srv(command_msg::Request& req,command_msg::Response& res) //event command node from service request
+  return ;
+}
+
+bool command_srv(goinghome_command::command::Request &req ,goinghome_command::command::Response &res)  //event command node from service request
 {
+  #ifdef DEBUG
+  ROS_INFO("sector: %d",req.msg_sector);
+  ROS_INFO("num: %d",req.msg_num);
+
+  #endif
+  ros::NodeHandle nevi_nh;
+  ros::ServiceClient nevi_service_client=nevi_nh.serviceClient<goinghome_command::command>("req_nevi_service");
+
+  goinghome_command::command rq;
+
+  rq.request.msg_sector=req.msg_sector;
+  rq.request.msg_num=req.msg_num;
+  
   //result 가 잘들어 왔는지 확인
   switch (req.msg_num)
   {
+    
 //move
   case 1: 
     ROS_INFO("request \"move\"");
-    
-    //nevi node에게 topic을 보낼 수 있을때까지 대기
-    ros::service::waitForService("nevi");
-    //nevi node에게 topic 보내고 받기
-    if(ros::service::call("nevi",nevi_msg::Request& req_nevi,nevi_msg::Response& res_nevi)){ //nevi to service request
+    if(nevi_service_client.call(rq)){
       
-      //nevi 에 보낼 정보 
-      req_nevi.msg_point=req.msg_sector;
-      req_nevi.msg_num=req.msg_num;
+      ROS_INFO("sector: %d",rq.request.msg_sector);
+      ROS_INFO("num: %d",rq.request.msg_num);
 
-      //nevi node 에서 처리를 다할때 까지 대기 
-      //네비를 사용할수 있으면 ture 네비가 사용중이므로 불가능하면 false
-      while(!(ros::service::exists("nevi")));
-      
-      // nevi 측 result 확인
-      if (res_nevi.result){
-        ROS_INFO("nevi_node success");
-        res.result=true;
-        return true;
-      }else{
-        ROS_ERROR("nevi_node fail");
-        res.result=false;
-        return false;
-        }  
-    }else{
-      ROS_ERROR("nevi(move) service conneting error");
-      res.result=false;
-      }
+  }else{
+    ROS_ERROR("nevi service fail");
+    
+  }
+    return true;
     break;
 
   //wait
   case 2:
   ROS_INFO("request \"wait\"");
-    
-    //nevi node에게 topic을 보낼 수 있을때까지 대기
-    ros::service::waitForService("nevi");
-    //nevi node에게 topic 보내고 받기
-    if(ros::service::call("nevi",nevi_msg::Request& req_nevi,nevi_msg::Response& res_nevi)){ //nevi to service request
+    if(nevi_service_client.call(rq)){
       
-      //nevi 에 보낼 정보 
-      req_nevi.msg_point=req.msg_point;
-      req_nevi.msg_num=req.msg_num;
+      ROS_INFO("sector: %d",rq.request.msg_sector);
+      ROS_INFO("num: %d",rq.request.msg_num);
 
-      //nevi node 에서 처리를 다할때 까지 대기 
-      //네비를 사용할수 있으면 ture 네비가 사용중이므로 불가능하면 false
-      while(!(ros::service::exists("nevi")));
-      
-      // nevi 측 result 확인
-      if (res_nevi.result){
-        ROS_INFO("nevi_node success");
-        res.result=true;
-        return true;
-      }else{
-        ROS_ERROR("nevi_node fail");
-        res.result=false;
-        return false;
-        }  
-    }else{
-      ROS_ERROR("nevi(wait) service conneting error");
-      res.result=false;
-      }
+  }else{
+    ROS_ERROR("nevi service fail");
     
+  }
+    return true;
     break;
 
   //comeback
   case 3:
   ROS_INFO("request \"comeback\"");
-    
-    //nevi node에게 topic을 보낼 수 있을때까지 대기
-    ros::service::waitForService("nevi");
-    //nevi node에게 topic 보내고 받기
-    if(ros::service::call("nevi",nevi_msg::Request& req_nevi,nevi_msg::Response& res_nevi)){ //nevi to service request
+    if(nevi_service_client.call(rq)){
       
-      //nevi 에 보낼 정보 
-      req_nevi.msg_point=req.msg_point;
-      req_nevi.msg_num=req.msg_num;
+      ROS_INFO("sector: %d",rq.request.msg_sector);
+      ROS_INFO("num: %d",rq.request.msg_num);
 
-      //nevi node 에서 처리를 다할때 까지 대기 
-      //네비를 사용할수 있으면 ture 네비가 사용중이므로 불가능하면 false
-      while(!(ros::service::exists("nevi")));
-      
-      // nevi 측 result 확인
-      if (res_nevi.result){
-        ROS_INFO("nevi_node success");
-        res.result=true;
-        return true;
-      }else{
-        ROS_ERROR("nevi_node fail");
-        res.result=false;
-        return false;
-        }
-    }else{
-      ROS_ERROR("nevi(wait) service conneting error");
-      res.result=false;
-      }
+  }else{
+    ROS_ERROR("nevi service  fail");
     
+  }
+  return true;
     break;
 
   default:
@@ -140,20 +98,20 @@ bool command_srv(command_msg::Request& req,command_msg::Response& res) //event c
     }
     ROS_ERROR("switch exception error!!");
     return false;
+
 }
 
 int main(int argc, char* argv[]){
     //ros init  
     ros::init(argc,argv,"goinghome_command");
-
-    //service node server init	req ,
-    ros::serviceServer service=nh.advertiseService("command",command_srv);
-
+    ros::NodeHandle command_nh;
+    //service node server init
+    ROS_INFO("server start");
+    ros::ServiceServer command_service=command_nh.advertiseService("goinghome_command",command_srv);
+    
     //request 가 들어올때까지 대기
     ros::spin();
-  
-    
-    
+
     return 0;
 }
 
