@@ -1,5 +1,13 @@
-uint8 msg_sector
+#point
+float32 px
+float32 py
+float32 pz
+float32 ox
+float32 oy
+float32 oz
+float32 ow
+
+#command
 uint8 msg_num
-string name
 ---
 bool result

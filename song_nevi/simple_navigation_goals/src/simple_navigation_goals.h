@@ -20,16 +20,5 @@
 //amcl-->initalpose
 #include <geometry_msgs/PoseWithCovarianceStamped.h> //initalpose msg 형식
 
-
-struct pointToSector {
-    float px;
-    float py;
-    float pz;
-    float ox;
-    float oy;
-    float oz;
-    float ow;
-};
-
 #elif
 #endif
