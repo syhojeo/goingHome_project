@@ -1,0 +1,38 @@
+﻿- https://github.com/ros-drivers/gscam (gscam package)
+
+→ gscam은 v4lsrc실험이 인증된 패키지
+→ v4l관련 device /dev/video0 연결됨 확인
+→ format = RG10
+→ ffmpegcolorspace는 gstreamer 0.1버전용
+→ 관련 검색하다보니 videoconvert로 바꾸라는 것을 봤고, 바꿨더니 publishing streaming에서 
+     진행되지 않 음 
+→ gstreamer는 1.0버전을 실행하는데 nano상에서는 1.14버전
+     하지만, 1.14버전도 1.0버전을 호환하는지 확실히 머르겠음
+→ export GSCAM_CONFIG="v4l2src device=/dev/video0 ! video/x-raw-rgb,framerate=30/1 !            
+     ffmpegcolorspace"명령어를 수행한후 rosrun gscam gscam시 실행안됨
+→ config안에 설정값을 다르게 함에 따라 warning 및 error종류가 다름, export내용에 따라 code연산이 이     
+    뤄지는 것같다고 추정.. 설정값을 바꾸면 확실히 결과가 다양하게 나타나는 것으로 보아 제대로된 설정을 하는  
+    것이 필요할 것같음.. ( camera calibraion file not found, could not get gstreamer sample, 
+     Assertion 'gst_uri_is_valid (uri)' failed → error 및  warning으로 나타난 문장 )
+→https://devtalk.nvidia.com/default/topic/1028961/jetson-tx2/gscam-and-ros-/
+    (gst_uri_is_valid(uri)'    failed 관련 검색하다 던 것)
+→ 설정값에 대한 내용은 Accelerated Gstreamer User Guide와 관련있어보임
+→ https://studyingdever.tistory.com/4?category=502391 (gscam의 cpp코드 동작과 관련한 내용)
+→ catkin_make를 할떄 CMake flag -DGSTREAMER_VERSION_1_x=On를 설정하라 했지만,          
+  catkin빌드가 안됨.. 현재, 결국 sudo apt-get install 방식으로 설치한 상황
+
+
+- https://github.com/peter-moran/jetson_csi_cam (Nvidia Jetson CSI camera launcher for ROS)
+
+https://developer.ridgerun.com/wiki/index.php?title=Xavier/Video_Capture_and_Display/Software_Support/GStreamer ( NVIDIA Xavier - Video Capture and Display - Software Support – Gstreamer )
+
+<요약>
+→ 원래의 v4l 환경설정이 안되있는지 ? ( 초기 설정 default 우려)
+→ 셋팅설정이 잘되어있다면 export값의 올바른 config설정찾는 것이 필요되어 보임..
+→ 또는 version 문제?.. 
+→ 아니면 전반적으로 영상이 아예 넘어 오지 않는 것같음..
+- http://answers.ros.org/question/203812/video-from-node-to-v4l2/
+- 
+
+
+
