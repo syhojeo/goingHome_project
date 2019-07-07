@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>simple_navigation_goals_tutorial</name>
+  <version>0.2.3</version>
+  <description>The simple_navigation_goals_tutorial package</description>
+
+  <maintainer email="songwinho@gmail.com">SongSeungho</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/</url>
+  <url type="repository">https://github.com</url>
+  <url type="bugtracker">https://github.com/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>message_generation</build_depend>
+  <build_depend>message_runtime</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>move_base_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>message_generation</exec_depend>
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>move_base_msgs</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>tf</exec_depend>
+
+</package>

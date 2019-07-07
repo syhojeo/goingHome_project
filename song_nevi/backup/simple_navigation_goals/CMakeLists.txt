@@ -1,11 +1,22 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(simple_navigation_goals_tutorial)
 
-find_package(catkin REQUIRED COMPONENTS geometry_msgs amcl actionlib move_base_msgs std_msgs roscpp tf)
+find_package(catkin REQUIRED COMPONENTS
+geometry_msgs
+amcl
+actionlib
+move_base_msgs
+std_msgs
+roscpp
+tf
+message_generation
+)
 
 catkin_package()
 
 include_directories(${catkin_INCLUDE_DIRS})
+
+add_service_files(FILES command.srv)
 
 # Build the executable
 add_executable(simple_navigation_goals src/simple_navigation_goals.cpp)
