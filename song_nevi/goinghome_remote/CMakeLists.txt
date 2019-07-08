@@ -56,7 +56,6 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   open_camera.msg
    nevi_point.msg
  )
 
@@ -177,10 +176,6 @@ add_executable(remote_nevi src/remote_nevi.cpp)
 add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 
-##switch_camera
-add_executable(switch_camera src/switch_camera.py)
-add_dependencies(switch_camera ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(switch_camera ${catkin_LIBRARIES} )
 
 #############
 ## Install ##
@@ -241,13 +236,6 @@ RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 
 ##remote_nevi
 install(TARGETS remote_nevi
-ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-##switch_camera
-install(TARGETS switch_camera
 ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

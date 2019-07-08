@@ -12,7 +12,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
     nevi_srv rq;
     
     //camera topic
-    static bool camera_sw; //camera on/off
+    std_msgs::Bool camera_sw; //camera on/off
     ros::NodeHandle camera_topic;
     ros::Publisher camera_pub =camera_topic.advertise<std_msgs::Bool>("camera_pub",1);
     
@@ -27,7 +27,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
 
         case GUIDE : 
         std::cout<<"guide ";
-        camera_sw=true;
+        camera_sw.data=true;
         case MOVE :
         std::cout<<"move ";
         rq.request.px=req.px;
@@ -58,8 +58,10 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
         ROS_INFO("service call to\"remote_nevi\"");
         if(rq.response.result){ //nevi 성공 --> camera node 실행
             //camera on/off topic send to sub
+            while(!camera_pub.isLatched()) //
+
             camera_pub.publish(camera_sw);
-            
+          
             res.result=true;
             return true;
             }else //nevi 실패
@@ -77,11 +79,20 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
         
 
 }
+//camera_node callback
+bool cameracallback(){
+
+
+return true;
+}
 
 int main (int argc,char* argv[] ){
     ros::init(argc,argv,"control_node");
     ros::NodeHandle control_server;
     ros::ServiceServer control_srv_server=control_server.advertiseService("control_service",control_server_callback);
+
+    ros::NodeHandle camera_server;
+    //ros::ServiceServer camera_srv_server=camera_server.advertiseService("camera_service",cameracallback);
     ROS_INFO("control service server start");
     ros::spin();
     return 0;
