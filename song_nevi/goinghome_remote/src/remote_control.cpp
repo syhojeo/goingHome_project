@@ -5,9 +5,17 @@
 
 bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res){
     ROS_INFO("control_callback");
+    
+    //nevi service 
     ros::NodeHandle control_service;
-    ros::ServiceClient control_client=control_service.serviceClient<remote_srv>("nevi_service");
+    ros::ServiceClient control_client=control_service.serviceClient<nevi_srv>("nevi_service");
     nevi_srv rq;
+    
+    //camera topic
+    static bool camera_sw; //camera on/off
+    ros::NodeHandle camera_topic;
+    ros::Publisher camera_pub =camera_topic.advertise<std_msgs::Bool>("camera_pub",1);
+    
 
     switch(req.com_num)
     {
@@ -19,7 +27,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
 
         case GUIDE : 
         std::cout<<"guide ";
-        
+        camera_sw=true;
         case MOVE :
         std::cout<<"move ";
         rq.request.px=req.px;
@@ -47,21 +55,13 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
     while(!control_client.exists());
 
     if(control_client.call(rq)){
+        ROS_INFO("service call to\"remote_nevi\"");
         if(rq.response.result){ //nevi 성공 --> camera node 실행
-            /* 
-            Py_Initialize();
-
-            PyRun_SimpleString("import roslaunch");
-            PyRun_SimpleString("package = 'rqt_gui'");
-            PyRun_SimpleString("executable = 'rqt_gui'");
-            PyRun_SimpleString("node = roslaunch.core.Node(package, executable)");
-            PyRun_SimpleString("launch = roslaunch.scriptapi.ROSLaunch()");
-            PyRun_SimpleString("launch.start()");
-            PyRun_SimpleString("process = launch.launch(node)");
-            PyRun_SimpleString("print process.is_alive()");
-            PyRun_SimpleString("process.stop()");
-            Py_Finalize();
-            */
+            //camera on/off topic send to sub
+            camera_pub.publish(camera_sw);
+            
+            res.result=true;
+            return true;
             }else //nevi 실패
             {
              res.result=false;

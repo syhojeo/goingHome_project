@@ -3,7 +3,7 @@
 //debug 확인용
 #define DEBUG
 //move_base action_client 
-typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBase_Client; //actionlib::SimpleActionClient 에서 move_base_msgs::MoveBaseAction의 메세지 형태 전송
+
 
 //amcl x,y 좌표
 //static double amcl_x,amcl_y;
@@ -14,7 +14,7 @@ typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBase_C
 //static double arg_x,arg_y;
 
 //sector 영역 구분 
-bool nevi_sev_callback(goinghome_remote::goinghome_remote::Request &req,goinghome_remote::goinghome_remote::Response &res){
+bool nevi_sev_callback(nevi_srv::Request &req,nevi_srv::Response &res){
   //action_clinet 객체 생성 "move_base"에게 요청을 보냄 true spin_thread 허용여부 (boost를 이용한)
   MoveBase_Client ac ("move_base", true); 
   //액션 서버(move_base가 작동할때까지 대기)

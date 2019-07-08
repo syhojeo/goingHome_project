@@ -17,13 +17,14 @@
 #include <python2.7/Python.h>
 
 //msg
+#include <std_msgs/Bool.h>
 #include <goinghome_remote/goinghome_remote.h>
 #include <goinghome_remote/remote_point.h>
 #include <move_base_msgs/MoveBaseAction.h> //movebase 에 전송할 topic msg 형태 헤더 파일
 #include <geometry_msgs/PoseStamped.h>
 #include <actionlib/client/simple_action_client.h>  //action_client 구성 헤더 파일
 
-
+typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBase_Client; //actionlib::SimpleActionClient 에서 move_base_msgs::MoveBaseAction의 메세지 형태 전송
 typedef goinghome_remote::goinghome_remote remote_srv;
 typedef goinghome_remote::remote_point nevi_srv;
 

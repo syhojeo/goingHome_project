@@ -20,6 +20,7 @@ bool gate_srv_callback(goinghome_remote::goinghome_remote::Request &req ,goingho
     while(!gate_client.exists());
 
     if(gate_client.call(gc_srv)){
+        ROS_INFO("service call to\"remote_control\"");
         if(gc_srv.response.result){
             res.result=true;
             gc_srv.response.id=res.id;
