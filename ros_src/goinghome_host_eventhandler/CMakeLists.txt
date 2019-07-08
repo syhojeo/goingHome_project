@@ -4,6 +4,7 @@ find_package(catkin REQUIRED COMPONENTS message_generation roscpp std_msgs)
 
 add_service_files(FILES nav_request.srv)
 add_service_files(FILES survail_request.srv)
+add_service_files(FILES goinghome_remote.srv)
 generate_messages(DEPENDENCIES std_msgs)
 # add_message_files(FILES default.msg)
 

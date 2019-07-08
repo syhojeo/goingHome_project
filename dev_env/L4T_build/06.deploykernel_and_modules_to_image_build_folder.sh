@@ -1,7 +1,7 @@
 source ./exportVariables.sh
 export BKUP_DATE=`date "+%Y_%m_%d_%H_%M_%S"`
 
-cd $JETSON_IMAGE_PATH
+cd $JETSON_KERNEL_IMAGE_PATH
 mv Image ./backup/
 mv zImage ./backup/
 mv kernel_supplements.tbz2 ./backup
@@ -14,9 +14,9 @@ mv dtb{,.$BKUP_DATE}
 
 cd $JETSON_KERNEL_OUT
 
-cp ./arch/arm64/boot/Image $JETSON_IMAGE_PATH
-cp ./arch/arm64/boot/zImage $JETSON_IMAGE_PATH
-cp -r ./arch/arm64/boot/dts $JETSON_IMAGE_PATH/dtb
+cp ./arch/arm64/boot/Image $JETSON_KERNEL_IMAGE_PATH
+cp ./arch/arm64/boot/zImage $JETSON_KERNEL_IMAGE_PATH
+cp -r ./arch/arm64/boot/dts $JETSON_KERNEL_IMAGE_PATH/dtb
 
 cd $JETSON_KERNEL_MODULE_OUT
-tar --owner root --group root -cjf $JETSON_IMAGE_PATH/kernel_supplements.tbz2 lib/modules
+tar --owner root --group root -cjf $JETSON_KERNEL_IMAGE_PATH/kernel_supplements.tbz2 lib/modules

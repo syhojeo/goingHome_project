@@ -11,7 +11,6 @@ void gobase(int mode = 0)
     }
 
     printf("Return to base!\n");
-    nav_progress = true;
 
     ros::NodeHandle nh;
     ros::ServiceClient navigation_service_client = nh.serviceClient<goinghome_host_eventhandler::nav_request>("navigation_request");
@@ -31,9 +30,10 @@ void gobase(int mode = 0)
         printf("request: (%f, %f, %f), (%f, %f, %f, %f)\n", (float)rq.request.px, (float)rq.request.py, (float)rq.request.pz, 
         (float)rq.request.ox, (float)rq.request.oy, (float)rq.request.oz, (float)rq.request.ow);
 
-        if(!rq.response.result)
+        if(rq.response.result)
         {
-            printf("send succees!\n");
+            printf("send success!\n");
+            nav_progress = true;
         }
 
         else
@@ -51,13 +51,57 @@ void gobase(int mode = 0)
     }
 }
 
-void set_destination(std::string &dest, std::string &name)
+void set_destination(std::string &dest, std::string &mode)
 {
-    std::cout << "go to " << dest << " and find " << name << '\n';
-    // 여기에 서비스/메시지 관련 내용 추가
+    // for debug process. comment here when debug is over
+    nav_progress = false;
 
-    std::cout << "WORK IN PROGRESS" << '\n';
-    nav_progress = true;
+    if (nav_progress && mode == 0)
+    {
+        printf("Robot service in progress. control order rejected\n");
+        ROS_ERROR("Error: navigating in progress\n");
+    }
+
+    std::cout << "go to " << dest << " and mode: " << mode '\n';
+
+    ros::NodeHandle nh;
+    ros::ServiceClient navigation_service_client = nh.serviceClient<goinghome_host_eventhandler::nav_request>("navigation_request");
+    
+    goinghome_host_eventhandler::nav_request rq;
+
+    // when filesystem implementation is complete, then read coordinates from loaded location
+    rq.request.px = 1;
+    rq.request.py = 2;
+    rq.request.pz = 0;
+    rq.request.ox = 0;
+    rq.request.oy = 0;
+    rq.request.oz = 0;
+    rq.request.ow = 5;
+
+    if (navigation_service_client.call(rq))
+    {
+        printf("request: (%f, %f, %f), (%f, %f, %f, %f)\n", (float)rq.request.px, (float)rq.request.py, (float)rq.request.pz, 
+        (float)rq.request.ox, (float)rq.request.oy, (float)rq.request.oz, (float)rq.request.ow);
+
+        if(rq.response.result)
+        {
+            printf("send success!\n");
+            nav_progress = true;
+        }
+
+        else
+        {
+            printf("error while processing navigation_service_client\n");
+        }
+
+        printf("result: %d\n", rq.response.result);
+    }
+
+    else
+    {
+        ROS_ERROR("Failed to call service navigation_service_srv");
+        nav_progress = false;
+    }
 
     return;
 }
@@ -75,11 +119,8 @@ void destination_menu()
     std::string dest, name;
     printf("select destination: ");
     std::cin >> dest;
-
-    printf("find who: ");
-    std::cin >> name;
     
-    set_destination(dest, name);
+    set_destination(dest);
 
     return;
 }

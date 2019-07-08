@@ -9,7 +9,7 @@ mkdir $ROOTFS_LOCATION
 # mkdir $JETSON_KERNEL_OUT
 # mkdir $JETSON_KERNEL_MODULE_OUT
 
-sudo apt install libncurses5-dev build-essential qemu libqt4-dev pkg-config git -y
+sudo apt install libncurses5-dev build-essential qemu qemu-user-static libqt4-dev pkg-config git -y
 
 wget -O l4t-jetson-driver-package-32-1-jetson-nano.tbz2 https://developer.nvidia.com/embedded/dlc/l4t-jetson-driver-package-32-1-jetson-nano  
 wget -O l4t-sample-root-filesystem-32-1-jetson-nano.tbz2 https://developer.nvidia.com/embedded/dlc/l4t-sample-root-filesystem-32-1-jetson-nano

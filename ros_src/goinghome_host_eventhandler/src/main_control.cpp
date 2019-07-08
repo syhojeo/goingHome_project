@@ -23,12 +23,12 @@ int main(int argc, char **argv)
             switch(menu)
             {
                 case '1':
-                    printf("set destination and command service\n");
+                    printf("Set destination and command service\n");
                     destination_menu();
                     break;
 
                 case '2':
-                    printf("call robot: return to base\n");
+                    printf("Call robot: return to base\n");
                     gobase(0);
                     break;
 

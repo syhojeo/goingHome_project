@@ -4,6 +4,7 @@
 #include "ros/ros.h"
 #include "goinghome_host_eventhandler/nav_request.h"
 #include "goinghome_host_eventhandler/survail_request.h"
+#include "goinghome_host_eventhandler/goinghome_remote.h"
 
 typedef struct location
 {
@@ -25,6 +26,6 @@ typedef struct location
 
 void destination_menu();
 void gobase(int mode);
-void set_destination(std::string &dest, std::string &name, std::string &mode);
+void set_destination(std::string &dest, std::string &mode);
 void initialize_control();
 void goSurveilancemode();

@@ -6,4 +6,4 @@ float32 oy
 float32 oz
 float32 ow
 ---
-int32 result
+bool result
