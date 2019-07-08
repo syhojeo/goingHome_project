@@ -14,7 +14,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
     //camera topic
     std_msgs::Bool camera_sw; //camera on/off
     ros::NodeHandle camera_topic;
-    ros::Publisher camera_pub =camera_topic.advertise<std_msgs::Bool>("camera_pub",1);
+    ros::Publisher camera_pub =camera_topic.advertise<std_msgs::Bool>("sw_pub",1);
     
 
     switch(req.com_num)
@@ -58,10 +58,10 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
         ROS_INFO("service call to\"remote_nevi\"");
         if(rq.response.result){ //nevi 성공 --> camera node 실행
             //camera on/off topic send to sub
-            while(!camera_pub.isLatched()) //
+            //while(!camera_pub.isLatched()) 
 
             camera_pub.publish(camera_sw);
-          
+            ROS_INFO("control_node send to\"camera_node\"");
             res.result=true;
             return true;
             }else //nevi 실패
