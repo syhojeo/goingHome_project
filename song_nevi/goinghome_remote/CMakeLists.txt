@@ -64,6 +64,7 @@ add_service_files(
    FILES
   goinghome_remote.srv
   remote_point.srv
+  image.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -186,10 +187,7 @@ target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+ 
 
 ## Mark executables and/or libraries for installation
 #   install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
@@ -206,11 +204,7 @@ target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+
 ### 노드 추가할때마다 install 도 추가
 #   install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
@@ -240,7 +234,17 @@ ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+## python scripts 
+install(PROGRAMS
+  scripts/remote_camera.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
+## launch file 
+install(FILES 
+  launch/goinghome_remote.launch
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 #############
 ## Testing ##
 #############
