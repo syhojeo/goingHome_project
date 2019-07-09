@@ -14,6 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   move_base_msgs
   roscpp
+  rospy
+  roslaunch
   std_msgs
   tf
 )
@@ -52,15 +54,16 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   .msg
-# )
+ add_message_files(
+   FILES
+   nevi_point.msg
+ )
 
 ## Generate services in the 'srv' folder
 add_service_files(
    FILES
   goinghome_remote.srv
+  remote_point.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -107,7 +110,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES goinghome_remote
- CATKIN_DEPENDS actionlib amcl geometry_msgs message_generation move_base_msgs roscpp std_msgs tf
+ CATKIN_DEPENDS actionlib amcl geometry_msgs message_generation move_base_msgs roscpp rospy std_msgs tf roslaunch
 #  DEPENDS system_lib
 )
 
@@ -172,6 +175,7 @@ target_link_libraries(remote_control ${catkin_LIBRARIES} )
 add_executable(remote_nevi src/remote_nevi.cpp)
 add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
+
 
 #############
 ## Install ##

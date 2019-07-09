@@ -3,7 +3,7 @@
 //debug 확인용
 #define DEBUG
 //move_base action_client 
-typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBase_Client; //actionlib::SimpleActionClient 에서 move_base_msgs::MoveBaseAction의 메세지 형태 전송
+
 
 //amcl x,y 좌표
 //static double amcl_x,amcl_y;
@@ -14,7 +14,7 @@ typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBase_C
 //static double arg_x,arg_y;
 
 //sector 영역 구분 
-bool nevi_srv(goinghome_remote::goinghome_remote::Request &req,goinghome_remote::goinghome_remote::Response &res){
+bool nevi_sev_callback(nevi_srv::Request &req,nevi_srv::Response &res){
   //action_clinet 객체 생성 "move_base"에게 요청을 보냄 true spin_thread 허용여부 (boost를 이용한)
   MoveBase_Client ac ("move_base", true); 
   //액션 서버(move_base가 작동할때까지 대기)
@@ -51,7 +51,7 @@ bool nevi_srv(goinghome_remote::goinghome_remote::Request &req,goinghome_remote:
   //응답 여부 판단
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
     //ac.getState() 로 상태 리턴  move_base_msgs/MoveBaseActionResult.msg
-    ROS_INFO("the base moved at x=%d y=%d!!",req.px,req.py);
+    ROS_INFO("the base moved at x=%f y=%f!!",req.px,req.py);
     res.result=true;
     return true;
   } else{
@@ -75,12 +75,11 @@ void callback(const geometry_msgs::PoseWithCovarianceStamped& msg){
 int main(int argc, char* argv[]){
   
   //ros 초기화 
-  ros::init(argc, argv, "simple_navigation_goals"); 
+  ros::init(argc, argv, "remote_nevi"); 
  
  //노드 관리를 위한 객체 생성
-  ros::NodeHandle nevi_nh;
-
-  ros::ServiceServer command_service=nevi_nh.advertiseService("nevi_service_server",nevi_srv);
+  ros::NodeHandle remote_nevi;
+  ros::ServiceServer nevi_sev_server=remote_nevi.advertiseService("nevi_service",nevi_sev_callback);
   ROS_INFO("nevi service server start");
   ros::spin();
   
