@@ -1,0 +1,5 @@
+<launch>
+<node name="remote_control" pkg="goinghome_remote" type="remote_control" />
+<node name="remote_camera" pkg="goinghome_remote" type="remote_camera.py" />
+<node name="remote_gate" pkg="goinghome_remote" type="remote_gate" />
+</launch>

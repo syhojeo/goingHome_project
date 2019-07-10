@@ -26,8 +26,8 @@ def camera_sw(data):
 
 def file_path ():
         file_path=os.path.split(os.path.realpath(__file__)) #file`s dir path
-        file_path=os.path.split(file_tuple[0])
-        launch_path=os.path.join(file_tuple[0],'launch','camera.launch')
+        file_path=os.path.split(file_path[0])
+        launch_path=os.path.join(file_path[0],'launch','camera.launch')
         return launch_path
 
 if __name__=='__main__':

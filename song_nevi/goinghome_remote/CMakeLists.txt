@@ -18,6 +18,10 @@ find_package(catkin REQUIRED COMPONENTS
   roslaunch
   std_msgs
   tf
+  move_base
+  map_server
+  robot_state_publisher
+  xacro
 )
 
 ## System dependencies are found with CMake's conventions
@@ -235,15 +239,18 @@ LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## python scripts 
-install(PROGRAMS
+catkin_install_python(PROGRAMS
   scripts/remote_camera.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 ## launch file 
-install(FILES 
-  launch/goinghome_remote.launch
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+install(DIRECTORY
+  param 
+  maps
+  launch
+  urdf
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 #############
 ## Testing ##
