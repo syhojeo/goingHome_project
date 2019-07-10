@@ -181,6 +181,16 @@ add_executable(remote_nevi src/remote_nevi.cpp)
 add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 
+##remote_nevi
+add_executable(remote_nevi src/remote_nevi.cpp)
+add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
+
+##fake
+add_executable(faek_node src/faek_node.cpp)
+add_dependencies(faek_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(faek_node ${catkin_LIBRARIES} )
+
 
 #############
 ## Install ##

@@ -16,7 +16,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
 
     //image processing node (slug)
     ros::NodeHandle image_service;
-    ros::ServiceClient image_client=image_service.serviceClient<image_srv>("image_service");
+    ros::ServiceClient image_client=image_service.serviceClient<image_srv>("fake_service");
     image_srv iq;
     
 
@@ -90,6 +90,8 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
                 return false;      
             }
             //camera node shutdown
+            ROS_INFO("searching Success");
+            ROS_INFO("id: %d",iq.response.id);
             camera_sw.data=false;
             camera_pub.publish(camera_sw);
             res.result=true;

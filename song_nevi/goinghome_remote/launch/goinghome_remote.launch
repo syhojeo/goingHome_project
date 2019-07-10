@@ -2,15 +2,13 @@
 <!-- Arguments -->
   <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
   <arg name="map_file" default="$(find goinghome_remote)/maps/map.yaml"/>
-  <arg name="move_forward_only" default="false"/>
 
 <!--goinghome_nevi-->
-<include file="(find goinghome_remote/launch/navi/remote_nevi.launch)">
+<include file="$(find goinghome_remote)/launch/navi/remote_nevi.launch">
 <arg name="model" value="$(arg model)"/>
- <arg name="map_file" default="$(find goinghome_remote)/maps/map.yaml"/>
-<arg name="move_forward_only" value="$(arg move_forward_only)"/>
+<arg name="map_file" value="$(arg map_file)"/>
+</include> 
 
-</include>  
 <!--goinghome_remote-->
 <include file="$(find goinghome_remote)/launch/remote_base.launch"/>
 
