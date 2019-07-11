@@ -1,0 +1,44 @@
+<launch>
+  <!-- Command Line Arguments -->
+  <arg name="sensor_id" default="0" />                       <!-- 카메라 센서의 ID -->
+  <arg name="cam_name" default="csi_cam_$(arg sensor_id)" /> <!-- 카메라의 이름 (상단의 camera_info에 맞춰서 만들어짐) -->
+  <arg name="frame_id" default="/$(arg cam_name)_link" />    <!-- TF 프레임 ID -->
+  <arg name="sync_sink" default="true" />                    <!-- App sync 동기화. 이 항목을 false로 맞출 경우 sub-par 프레임 문제를 고칠 수도 있음. -->
+  <arg name="width" default="1920" />                        <!-- 가로 길이 -->
+  <arg name="height" default="1080" />                       <!-- 세로 길이 -->
+  <arg name="fps" default="30" />                            <!-- 선호하는 프레임레이트. -->
+
+  <!-- 파라메터 서버에서 Argument를 사용할 수 있도록 만듬 -->
+  <param name="$(arg cam_name)/camera_id" type="int" value="$(arg sensor_id)" />
+  <param name="$(arg cam_name)/image_width" type="int" value="$(arg width)" />
+  <param name="$(arg cam_name)/image_height" type="int" value="$(arg height)" />
+  <param name="$(arg cam_name)/target_fps" type="int" value="$(arg fps)" />
+
+  <!-- GSCAM 파이프라인을 정의함  -->
+  <env name="GSCAM_CONFIG" value="nvcamerasrc sensor-id=$(arg sensor_id) ! video/x-raw(memory:NVMM),
+    width=(int)$(arg width), height=(int)$(arg height), format=(string)I420, framerate=(fraction)$(arg fps)/1 ! 
+    nvvidconv flip-method=2 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR" />
+
+  <!-- videoconvert가 상당히 중요한 역할을 할 것으로 보임 -->
+  <!-- 실제 Jetson Nano 상에서는 이것을 사용해야함. nvcamerasrc가 nvarguscamerasrc로 변경됨 -->
+  <!-- nvarguscamerasrc ! 'video/x-raw(memory:NVMM),width=3820, height=2464, framerate=21/1, 
+  format=NV12' ! nvvidconv flip-method=0 ! 'video/x-raw,width=960, height=616' ! nvvidconv ! 
+  nvegltransform ! nveglglessink -e -->
+
+  <!-- 작업 공간 제 1 안 -->
+  <!-- nvarguscamerasrc ! 'video/x-raw(memory:NVMM),width=(int)$(arg width), height=(int)$(arg height), framerate=(fraction)$(arg fps)/1, 
+  format=NV12' ! nvvidconv flip-method=0 ! 'video/x-raw, format=(string)BGRx' ! nvvidconv ! nvegltransform ! nveglglessink -e ! videoconvert ! video/x-raw, format=(string)BGR-->
+
+  <!-- 작업 공간 제 2 안 -->
+  <!-- nvarguscamerasrc ! 'video/x-raw(memory:NVMM),width=(int)$(arg width), height=(int)$(arg height), framerate=(fraction)$(arg fps)/1, 
+  format=NV12' ! nvvidconv flip-method=0 ! 'video/x-raw, format=(string)BGRx' ! nvvidconv ! nvegltransform ! nveglglessink -e ! videoconvert ! video/x-raw, format=(string)BGR-->
+
+  <!-- Start the GSCAM node -->
+  <node pkg="gscam" type="gscam" name="$(arg cam_name)">
+    <param name="camera_name" value="$(arg cam_name)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="sync_sink" value="$(arg sync_sink)" />
+    <remap from="camera/image_raw" to="$(arg cam_name)/image_raw" />
+    <remap from="/set_camera_info" to="$(arg cam_name)/set_camera_info" />
+  </node>
+</launch>
