@@ -26,8 +26,10 @@ def camera_sw(data):
 
 def file_path ():
         file_path=os.path.split(os.path.realpath(__file__)) #file`s dir path
-        file_path=os.path.split(file_path[0])
-        launch_path=os.path.join(file_path[0],'launch','fake_node.launch')
+        for i in range(2)  :
+                file_path=os.path.split(file_path[0])
+
+        launch_path=os.path.join(file_path[0],'share','goinghome_remote','launch','fake_node.launch')
         return launch_path
 
 if __name__=='__main__':
@@ -38,12 +40,13 @@ if __name__=='__main__':
         roslaunch.configure_logging(uuid)
         path=file_path()
         print(path)
-        launch = roslaunch.parent.ROSLaunchParent(uuid,path)
         global sw
         global bar
-        while True:    
+        while True:
                 if bar:
+                        
                         if sw:
+                                launch = roslaunch.parent.ROSLaunchParent(uuid,[path])
                                 launch.start()
                                 bar =False  
                         else:

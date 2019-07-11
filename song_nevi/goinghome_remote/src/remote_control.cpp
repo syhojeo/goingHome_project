@@ -1,4 +1,4 @@
-#include "remote_base.h"
+#include "goinghome_remote.h"
 
 
 bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res){
@@ -31,6 +31,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
         case GUIDE : 
         std::cout<<"guide ";
         camera_sw.data=true;
+        case COMEBACK:
         case MOVE :
         std::cout<<"move ";
         rq.request.px=req.px;
@@ -39,6 +40,10 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
         break;
     
     /*추후에 사용될지 모르는 것들
+    case CAMERA : 
+
+        break;
+    
     case SEARCH : 
 
         break;
@@ -56,10 +61,10 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
     }
     //nevi exists 
     for(int count=0;!nevi_client.exists();count++){
-                ROS_INFO("image_node connecting....");
+                ROS_INFO("nevi_node connecting....");
                 sleep(1);
                 if(count==5){
-                    ROS_ERROR("image_node connect FAIL");
+                    ROS_ERROR("nevi_node connect FAIL");
                     res.result=false;
                     return false;       
                 }
@@ -71,10 +76,10 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
             camera_sw.data=true;
             camera_pub.publish(camera_sw); 
             ROS_INFO("control_node send to\"camera_node\"");
+            
             for(int count=0;!image_client.exists();count++){
                 ROS_INFO("image_node connecting....");
                 sleep(1);
-
                 if(count==5){
                     ROS_ERROR("image_node connect FAIL");
                     res.result=false;
@@ -87,13 +92,17 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
             }else{ //image node search fail
                 ROS_ERROR("searching fail");   
                 res.result=false;
+                res.id=-1;
                 return false;      
             }
             //camera node shutdown
             ROS_INFO("searching Success");
             ROS_INFO("id: %d",iq.response.id);
+            
+            sleep(3);
             camera_sw.data=false;
             camera_pub.publish(camera_sw);
+            
             res.result=true;
             return true;
 
@@ -120,10 +129,7 @@ return true;
 int main (int argc,char* argv[] ){
     ros::init(argc,argv,"control_node");
     ros::NodeHandle control_server;
-    ros::ServiceServer control_srv_server=control_server.advertiseService("nevi_service",control_server_callback);
-
-    ros::NodeHandle camera_server;
-    //ros::ServiceServer camera_srv_server=camera_server.advertiseService("camera_service",cameracallback);
+    ros::ServiceServer control_srv_server=control_server.advertiseService("control_service",control_server_callback);
     ROS_INFO("control service server start");
     ros::spin();
     return 0;

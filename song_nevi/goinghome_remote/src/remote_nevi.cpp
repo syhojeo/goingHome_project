@@ -1,4 +1,4 @@
-#include "remote_base.h"
+#include "goinghome_remote.h"
 
 //debug 확인용
 #define DEBUG

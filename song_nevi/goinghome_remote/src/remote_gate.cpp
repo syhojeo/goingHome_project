@@ -1,4 +1,4 @@
-#include "remote_base.h"
+#include "goinghome_remote.h"
 
 bool gate_srv_callback(goinghome_remote::goinghome_remote::Request &req ,goinghome_remote::goinghome_remote::Response &res){
     ROS_INFO("gate_callback");
@@ -44,7 +44,7 @@ bool gate_srv_callback(goinghome_remote::goinghome_remote::Request &req ,goingho
         }    
     }else //control 노드가 작동하지 않을시
     {
-            ROS_ERROR("\"remote_control\" node not connect");
+            ROS_ERROR("contorol node is fail");
             res.result=false;
             return false;    
     }
@@ -65,6 +65,7 @@ ros::init(argc,argv,"remote_gate");
 
 
 /*
+shell test
 rosservice call /gate_service "px: 1.0
 py: 1.0
 ow: 0.4

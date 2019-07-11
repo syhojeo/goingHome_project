@@ -181,15 +181,10 @@ add_executable(remote_nevi src/remote_nevi.cpp)
 add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 
-##remote_nevi
-add_executable(remote_nevi src/remote_nevi.cpp)
-add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
-
 ##fake
-add_executable(faek_node src/faek_node.cpp)
-add_dependencies(faek_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(faek_node ${catkin_LIBRARIES} )
+add_executable(fake_node src/fake_node.cpp)
+add_dependencies(fake_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(fake_node ${catkin_LIBRARIES} )
 
 
 #############
@@ -248,6 +243,14 @@ ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+##fake_node
+install(TARGETS fake_node
+ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 ## python scripts 
 catkin_install_python(PROGRAMS
   scripts/remote_camera.py
