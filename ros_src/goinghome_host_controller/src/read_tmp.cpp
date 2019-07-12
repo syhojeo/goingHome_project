@@ -7,17 +7,17 @@
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "file_server_Read");
-    ros::NodeHandle nh("~");
+    ros::NodeHandle nh;
 
-    ros::ServiceClient personInfo_request = nh.serviceClient<goinghome_host_controller::infoRequest>("infoTest");
-    goinghome_host_controller::infoRequest pid;
+    ros::ServiceClient person_req = nh.serviceClient<goinghome_host_controller::infoRequest>("request_personal_info");
+    goinghome_host_controller::infoRequest srv;
 
-    for (int32_t i = 0; i < 8; i++)
+    for (int i = 0; i < 9; i++)
     {
-        pid.request.id = i;
-        ROS_INFO("requesting personInfo: %d", pid.request.id);
+        srv.request.id = i;
+        ROS_INFO("requesting personInfo: %d", srv.request.id);
 
-        if (personInfo_request.call(pid))
+        if (person_req.call(srv))
         {
             ROS_INFO("personData received!");
         }

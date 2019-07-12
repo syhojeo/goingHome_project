@@ -1,5 +1,5 @@
 ##request##
-int32 id
+int64 id
 ------
 ##response##
 float32 px
