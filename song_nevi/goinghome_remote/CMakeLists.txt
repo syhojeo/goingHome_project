@@ -18,6 +18,10 @@ find_package(catkin REQUIRED COMPONENTS
   roslaunch
   std_msgs
   tf
+  move_base
+  map_server
+  robot_state_publisher
+  xacro
 )
 
 ## System dependencies are found with CMake's conventions
@@ -64,6 +68,7 @@ add_service_files(
    FILES
   goinghome_remote.srv
   remote_point.srv
+  image.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -176,6 +181,11 @@ add_executable(remote_nevi src/remote_nevi.cpp)
 add_dependencies(remote_nevi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 
+##fake
+add_executable(fake_node src/fake_node.cpp)
+add_dependencies(fake_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(fake_node ${catkin_LIBRARIES} )
+
 
 #############
 ## Install ##
@@ -186,10 +196,7 @@ target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+ 
 
 ## Mark executables and/or libraries for installation
 #   install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
@@ -206,11 +213,7 @@ target_link_libraries(remote_nevi ${catkin_LIBRARIES} )
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+
 ### 노드 추가할때마다 install 도 추가
 #   install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
@@ -241,6 +244,27 @@ LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+##fake_node
+install(TARGETS fake_node
+ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+## python scripts 
+catkin_install_python(PROGRAMS
+  scripts/remote_camera.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+## launch file 
+install(DIRECTORY
+  param 
+  maps
+  launch
+  urdf
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 #############
 ## Testing ##
 #############
