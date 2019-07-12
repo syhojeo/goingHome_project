@@ -1,8 +1,10 @@
-#include"goinghome_remote.h"
+#include"goinghome_remote_v2.h"
 #include<std_msgs/UInt16.h>
 
-bool fake_sev_callback(goinghome_remote::image::Request &req,goinghome_remote::image::Response &res){
-res.id =res.id =rand()%9;
+
+bool fake_sev_callback(goinghome_remote_v2::image::Request &req,goinghome_remote_v2::image::Response &res){
+
+res.id =rand()%10;
 return true;
 }
 

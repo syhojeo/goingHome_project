@@ -1,0 +1,53 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/gohome/catkin_ws/devel_isolated/move_base/include",
+                "/home/gohome/catkin_ws/install_isolated/include",
+                "/opt/ros/melodic/include",
+                "/home/gohome/catkin_ws/src/navigation/amcl/include",
+                "/home/gohome/catkin_ws/src/navigation/base_local_planner/include",
+                "/home/gohome/catkin_ws/src/navigation/carrot_planner/include",
+                "/home/gohome/catkin_ws/src/ceres-solver/include",
+                "/home/gohome/catkin_ws/src/navigation/clear_costmap_recovery/include",
+                "/home/gohome/catkin_ws/src/navigation/costmap_2d/include",
+                "/home/gohome/catkin_ws/src/navigation/dwa_local_planner/include",
+                "/home/gohome/catkin_ws/src/navigation/global_planner/include",
+                "/home/gohome/catkin_ws/src/song_nevi/backup/goinghome_command/include",
+                "/home/gohome/catkin_ws/src/song_nevi/goinghome_remote/include",
+                "/home/gohome/catkin_ws/src/song_nevi/goinghome_remote_v2/include",
+                "/home/gohome/catkin_ws/src/navigation/map_server/include",
+                "/home/gohome/catkin_ws/src/navigation/move_base/include",
+                "/home/gohome/catkin_ws/src/navigation/move_slow_and_clear/include",
+                "/home/gohome/catkin_ws/src/navigation/nav_core/include",
+                "/home/gohome/catkin_ws/src/navigation/navfn/include",
+                "/home/gohome/catkin_ws/src/robot_setup_tf/include",
+                "/home/gohome/catkin_ws/src/navigation/rotate_recovery/include",
+                "/home/gohome/catkin_ws/src/song_nevi/backup/simple_navigation_goals/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_bullet/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_eigen/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_geometry_msgs/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_kdl/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_msgs/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_ros/include",
+                "/home/gohome/catkin_ws/src/geometry2/tf2_sensor_msgs/include",
+                "/home/gohome/catkin_ws/src/turtlebot3_simulations/turtlebot3_fake/include",
+                "/home/gohome/catkin_ws/src/turtlebot3_simulations/turtlebot3_gazebo/include",
+                "/home/gohome/catkin_ws/src/turtlebot3/turtlebot3_slam/include",
+                "/home/gohome/catkin_ws/src/navigation/voxel_grid/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
