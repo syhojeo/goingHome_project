@@ -1,0 +1,3 @@
+<launch>
+<node name="fake_node" pkg="goinghome_remote" type="fake_node" output="screen"/>
+</launch>
