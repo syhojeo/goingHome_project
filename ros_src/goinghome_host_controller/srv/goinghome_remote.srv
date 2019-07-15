@@ -1,0 +1,10 @@
+##request##
+#point
+float32 px
+float32 py
+float32 ow
+uint8 com_num
+------
+##response##
+bool result
+int64 id

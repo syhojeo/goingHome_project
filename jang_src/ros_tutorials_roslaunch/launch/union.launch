@@ -1,0 +1,17 @@
+<launch>
+<!--
+    <node pkg="ros_tutorials_roslaunch" type="topic_publisher" name="topic_publisher1"/>
+    <node pkg="ros_tutorials_roslaunch" type="topic_subscriber" name="topic_subscriber1"/>
+    <node pkg="ros_tutorials_roslaunch" type="topic_publisher" name="topic_publisher2"/>
+    <node pkg="ros_tutorials_roslaunch" type="topic_subscriber" name="topic_subscriber2"/>
+-->
+    <group ns="ns1">
+        <node pkg="ros_tutorials_roslaunch" type="topic_publisher" name="topic_publisher"/>
+        <node pkg="ros_tutorials_roslaunch" type="topic_subscriber" name="topic_subscriber"/>
+    </group>
+
+    <group ns="ns2">
+        <node pkg="ros_tutorials_roslaunch" type="topic_publisher" name="topic_publisher"/>
+        <node pkg="ros_tutorials_roslaunch" type="topic_subscriber" name="topic_subscriber"/>
+    </group>
+</launch>

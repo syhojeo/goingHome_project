@@ -1,0 +1,24 @@
+rostopic pub -l /move_base_simple/goal geometry_msgs/Pose '{position: {x: 1.42, y: -0.07, z: 0}, orientation: {x: 0, y: 0, z: 0.71, w: 0.70}}'
+rostopic pub /move_base_simple/goal geometry_msgs/Pose '{position: {x:3.75 y:1.33 z:0}, orientation: {x:0 y:0 z:-0.71 w:0.70}}'
+rostopic pub /move_base_simple/goal geometry_msgs/Pose '{position: {x:1.45 y:2.5 z:0}, orientation: {x:0 y:0 z:-0.71 w:0.70}}'
+rostopic pub /move_base_simple/goal geometry_msgs/Pose '{position: {x:3.9 y:-0.57 z:0}, orientation: {x:0 y:0 z:0.93 w:-0.38}}'
+rostopic pub /move_base_simple/goal geometry_msgs/Pose '{position: {x:0.21 y:-0.15 z:0}, orientation: {x:0 y:0 z:-4.73 w:1}}'
+
+
+geometry_msgs/PoseStamped
+
+std_msgs/Header header
+  uint32 seq
+  time stamp
+  string frame_id
+geometry_msgs/Pose pose
+  geometry_msgs/Point position
+    float64 x
+    float64 y
+    float64 z
+  geometry_msgs/Quaternion orientation
+    float64 x
+    float64 y
+    float64 z
+    float64 w
+

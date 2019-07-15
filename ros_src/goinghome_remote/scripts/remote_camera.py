@@ -28,8 +28,8 @@ def file_path ():
         file_path=os.path.split(os.path.realpath(__file__)) #file`s dir path
         for i in range(2)  :
                 file_path=os.path.split(file_path[0])
-
         launch_path=os.path.join(file_path[0],'share','goinghome_remote','launch','camera_node.launch')
+        launch_path=os.path.join(file_path[0],'share','goinghome_remote','launch','fake_node.launch')
         return launch_path
 
 if __name__=='__main__':

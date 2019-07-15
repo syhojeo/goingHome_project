@@ -35,6 +35,7 @@ bool gate_srv_callback(goinghome_remote::goinghome_remote::Request &req ,goingho
         if(gc_srv.response.result){
             res.result=true;
             res.id=gc_srv.response.id;
+            gc_srv.response.id=res.id;
             ROS_INFO("service received from\"remote_control\"");
             return true;
         }else

@@ -1,3 +1,4 @@
 uint8 com_num
 ---
 int64 id
+uint16 id

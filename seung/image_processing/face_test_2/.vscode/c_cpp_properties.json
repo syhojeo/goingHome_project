@@ -1,0 +1,20 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/jet/catkin_ws/devel/include",
+        "/opt/ros/melodic/include",
+        "/home/jet/catkin_ws/src/beginner_tutorials/include",
+        "/home/jet/catkin_ws/src/vision_opencv/cv_bridge/include",
+        "/home/jet/catkin_ws/src/gscam/include",
+        "/home/jet/catkin_ws/src/vision_opencv/image_geometry/include",
+        "/usr/include"
+      ],
+      "name": "Linux"
+    }
+  ]
+}
