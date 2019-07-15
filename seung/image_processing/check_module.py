@@ -1,28 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+## client 의 srv가 왔을때 부터 영상처리 시작
+
 from __future__ import print_function
 #python 2.7에서도 python3버전의 일부 함수들을 사용하게 함
 import roslib
-roslib.load_manifest('face_test_2')
+roslib.load_manifest('face_checking')
 import sys
 import rospy
 import cv2
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
-from face_test_2.srv import *
+from face_checking.srv import *
 from cv_bridge import CvBridge, CvBridgeError
 import face_recognition
 import numpy as np
+import time
 
-
+#서비스를 ctrl node 로 보내기 위한 flag
+flag =1
+#영상처리 결과를 알려주는 전역변수 id
+sid =2
 
 #face recognition
 # Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("/home/jet/git_work/face_recognition/examples/obama.jpg")
+obama_image = face_recognition.load_image_file("/home/goinghome/git/face_recognition/examples/obama.jpg")
 obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
 # Load a second sample picture and learn how to recognize it.
-biden_image = face_recognition.load_image_file("/home/jet/git_work/face_recognition/examples/biden.jpg")
+biden_image = face_recognition.load_image_file("/home/goinghome/git/face_recognition/examples/biden.jpg")
 biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
 # Create arrays of known face encodings and their names
@@ -43,16 +49,18 @@ face_names = []
 class image_converter:
 
   def __init__(self):
-
     self.image_pub = rospy.Publisher("image_topic_2",Image)
 
     self.bridge = CvBridge()
-    lock.aquire()
     self.image_sub = rospy.Subscriber("/camera/image_raw",Image,self.callback)
-    lock.release()
-  def callback(self,data):
-    global face_names
     print('start callback')
+  def callback(self,data):
+    
+    global face_names
+    global sid
+    global flag
+    
+   
     try:
       frame = self.bridge.imgmsg_to_cv2(data, "bgr8")
     except CvBridgeError as e:
@@ -92,12 +100,12 @@ class image_converter:
             if matches[best_match_index]:
                 name = known_face_names[best_match_index]
             face_names.append(name)
-
+    
 
             
           
     process_this_frame = not process_this_frame
-    
+  
 
 
         # Display the results
@@ -123,41 +131,69 @@ class image_converter:
         self.image_pub.publish(self.bridge.cv2_to_imgmsg(frame, "bgr8"))
     except CvBridgeError as e:
         print(e)
-    print('out of for',face_names)
     
-    
-#sevice call handler 
-def handle_test(req): 
-  global face_names
+    #searching result
+    if 'Unknown' in face_names:
+      sid = 0
+      #flag =0 
+      #self.image_pub.unregister()
+      #self.image_sub.unregister()
+      #cv2.destroyAllWindows()
+   
+      #time.sleep(100)
+      
   
-  if 'Unknown' in face_names:
-      id = 0
-  elif 'Barack Obama' in face_names:
-      id = 1
-  else: 
-      id = 2
-  #else:
-  #'Joe Biden' in face_names:               
-  print("Returning [com= %d ]"%(req.com))
-  x = req.com
-  return testResponse(id)
+
+    elif 'Barack Obama' in face_names:
+      print('obama')
+      sid = 321
+      flag =0 #break while (receive srv)
+      self.image_pub.unregister()
+      self.image_sub.unregister()
+      cv2.destroyAllWindows()
+     
+      #time.sleep(100)
+      
+      
+    else: #continue
+      sid = 2
+
+
 
 def main(args):
+  #init node
   rospy.init_node('image_converter', anonymous=True)
-  ic = image_converter()
-  
   #s=rospy.Service('test',test,handle_test)
   print ("Ready to add id.")
   try:
-    lock.aquire()
-    s=rospy.Service('test',test,handle_test)
-    lock.release()
-    rospy.spin() 
-    print('end')
+    s=rospy.Service('image_srv',image,handle_test)
+    rospy.spin()  
   except KeyboardInterrupt:
     print("Shutting down")
-  cv2.destroyAllWindows()
+  
+
+
+
+
+  #sevice call handler 
+def handle_test(req):  
+    #start image processing
+  print('com_num = %d' % req.com_num)         
+  global flag
+  global sid
+  ic = image_converter()
+  #영상처리가 끝날때 까지 대기
+  while True:
+    print('in while')
+    time.sleep(1)
+    if flag == 0:
+        break
+  
+  
+  print('out of while')    
+
+  return imageResponse(sid)
+
 
 if __name__ == '__main__':
-
     main(sys.argv)

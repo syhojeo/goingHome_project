@@ -2,7 +2,7 @@
 
 import sys
 import rospy
-from face_test_2.srv import *
+from face_checking.srv import *
 
 def add_two_ints_client(x):
     rospy.wait_for_service('test')
