@@ -3,7 +3,8 @@
 
 bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res){
     ROS_INFO("control_callback");
-    
+    bool comeback =false;
+  
     //nevi service 
     ros::NodeHandle nevi_service;
     ros::ServiceClient nevi_client=nevi_service.serviceClient<nevi_srv>("nevi_service");
@@ -16,6 +17,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
 
     //image processing node (slug)
     ros::NodeHandle image_service;
+    ros::ServiceClient image_client=image_service.serviceClient<image_srv>("image_srv");
     ros::ServiceClient image_client=image_service.serviceClient<image_srv>("fake_service");
     image_srv iq;
     
@@ -30,6 +32,14 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
 
         case GUIDE : 
         std::cout<<"guide ";
+        rq.request.px=req.px;
+        rq.request.py=req.py;
+        rq.request.ow=req.ow;
+        camera_sw.data=true;
+        comeback=false;
+        break;
+        case COMEBACK:
+        comeback=true;
         camera_sw.data=true;
         case COMEBACK:
         case MOVE :
@@ -74,6 +84,38 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
         ROS_INFO("service call to\"remote_nevi\"");
         if(rq.response.result){ //nevi 성공 --> camera node 실행
             camera_sw.data=true;
+            //camera_pub.publish(camera_sw); 
+            ROS_INFO("control_node send to\"camera_node\"");
+                if(!comeback){
+
+                    for(int count=0;!image_client.exists();count++){
+                        ROS_INFO("image_node connecting....");
+                        sleep(1);
+                        if(count==100){
+                            ROS_ERROR("image_node connect FAIL");
+                            res.result=false;
+                            return false;       
+                        }
+                    }
+                iq.request.com_num=20;
+                    if(image_client.call(iq)){
+                        res.id=iq.response.id;
+                    }else{ //image node search fail
+                        ROS_ERROR("searching fail");   
+                        res.result=false;
+                        res.id=-1;
+                        return false;      
+                    }
+                //camera node shutdown
+                ROS_INFO("searching Success");
+                ROS_INFO("id: %d",iq.response.id);
+                res.id=iq.response.id;
+                camera_sw.data=false;
+                //camera_pub.publish(camera_sw);
+            }
+            res.result=true;
+            return true;
+        }else{ //nevi 실패
             camera_pub.publish(camera_sw); 
             ROS_INFO("control_node send to\"camera_node\"");
             
@@ -107,8 +149,7 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
             return true;
 
         }else{ //nevi 실패
-        
-            res.result=false;
+             res.result=false;
             return false;   
         }
         }else{
@@ -116,13 +157,9 @@ bool control_server_callback(remote_srv::Request &req ,remote_srv::Response &res
             res.result=false;
             return false;
         }
-
-
 }
 //camera_node callback
 bool cameracallback(){
-
-
 return true;
 }
 

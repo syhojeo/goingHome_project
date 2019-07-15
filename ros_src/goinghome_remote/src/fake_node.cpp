@@ -2,8 +2,9 @@
 #include<std_msgs/UInt16.h>
 
 bool fake_sev_callback(goinghome_remote::image::Request &req,goinghome_remote::image::Response &res){
-res.id =0;
-return true;
+  res.id =res.id =rand()%9;
+  res.id =0;
+  return true;
 }
 
 

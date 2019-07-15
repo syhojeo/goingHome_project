@@ -60,6 +60,7 @@
   <build_depend>roslaunch</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>amcl</build_depend>
+  <build_depend>gscam</build_depend>
   
   <build_export_depend>actionlib</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
@@ -70,6 +71,7 @@
   <build_export_depend>roslaunch</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>tf</build_export_depend>
+  <build_export_depend>gscam</build_export_depend>
   
   <exec_depend>actionlib</exec_depend>
   <exec_depend>amcl</exec_depend>
@@ -79,8 +81,8 @@
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>move_base</exec_depend>
+  <exec_depend>gscam</exec_gscam>
   <exec_depend>xacro</exec_depend>
-
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->

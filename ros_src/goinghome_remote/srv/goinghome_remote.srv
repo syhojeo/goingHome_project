@@ -7,4 +7,5 @@ uint8 com_num
 ------
 ##result##
 bool result
+int64 id
 int16 id

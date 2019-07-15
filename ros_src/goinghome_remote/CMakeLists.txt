@@ -22,6 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
   map_server
   robot_state_publisher
   xacro
+  gscam
 )
 
 ## System dependencies are found with CMake's conventions
@@ -254,6 +255,7 @@ RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 ## python scripts 
 catkin_install_python(PROGRAMS
   scripts/remote_camera.py
+  scripts/camera_module.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

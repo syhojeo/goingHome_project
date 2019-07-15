@@ -1,0 +1,3 @@
+<launch>
+<node name="remote_camera" pkg="goinghome_remote" type="remote_moudule.py" />
+</launch>
