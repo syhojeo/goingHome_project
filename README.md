@@ -16,10 +16,10 @@
 <br/><br/><br/><br/><br/><br/><br/><br/>
 <br/><br/><br/><br/><br/><br/><br/><br/>
 
-<a name="YourAnchor">1. chapter4</a>
+<a id="YourAnchor">1. chapter4</a>
 
 <br/><br/><br/><br/><br/><br/><br/><br/>
 <br/><br/><br/><br/><br/><br/><br/><br/>
 <br/><br/><br/><br/><br/><br/><br/><br/>
-<a name="123">1. hwhfihifhierfhieur</a>
+<a id="123">1. hwhfihifhierfhieur</a>
 ## 2.개요2
