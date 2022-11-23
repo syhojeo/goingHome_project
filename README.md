@@ -26,12 +26,22 @@
 
 https://sore-burst-da4.notion.site/7628a5ab431343ab98273caa50d87605
 
+
+
 ## 프로그램 시연 영상
 
-![](https://www.youtube.com/watch?v=13UMXY5v2tM)
+- 프로젝트 시연 영상
 
 https://www.youtube.com/watch?v=13UMXY5v2tM
 
+
+
+- 프로젝트 시연 SLAM 영상
+
 https://www.youtube.com/watch?v=xgdU7-KInRU&feature=emb_title
+
+
+
+- 넓은 공간에서의 SLAM 영상
 
 https://www.youtube.com/watch?v=_6iRcoKBq-M&feature=emb_title
